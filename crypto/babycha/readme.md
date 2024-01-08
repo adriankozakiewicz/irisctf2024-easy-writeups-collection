@@ -110,60 +110,72 @@ if __name__ == "__main__":
 
 ```
 
+And example output - we can see that input is indeed ecrypted
+
+![plot](./simple_output.jpg)
+
+
 Let's take a closer look at the function that handles basics of encryption
 
 ```python
 
 def encrypt(data):
     global state, buffer
-    print("buffer: ", len(buffer))
-    output = []
-    for b in data:
-        if len(buffer) == 0:
-            buffer = b"".join(long_to_bytes(x).rjust(4, b"\x00") for x in state)
-            print("changed state:", state)
-        output.append(b ^ buffer[0])
-        buffer = buffer[1:]
-    return bytes(output)
-
-```
-
-![plot](./simple_output.jpg)
-
-encryption is actually only data[i] ^ state[i] (state is first converted to buffer(converted to string and added zeros if needed) ). 
-
-Important thing you should know about xor is if a ^ b = c then c ^ a = b and c ^ b = a, 
-
-also order doesn't matter so a ^ b = b ^ a. It's very convenient when comes to exploiting simple xor encryption.
-
-In our script if we change code and insert same state 
-```python
-
-def encrypt(data):
-    global state, buffer
-    print("state before encryption:", state)
-    print("buffer: ", len(buffer))
+    print("buffer: ", len(buffer)) # print state
     output = []
     for b in data:
         if len(buffer) == 0:
             buffer = b"".join(long_to_bytes(x).rjust(4, b"\x00") for x in state)
             state = chacha_block(state)
-            print("changed state:", state)
+            print("changed state:", state) # print changed state
         output.append(b ^ buffer[0])
         buffer = buffer[1:]
     return bytes(output)
 
 ```
 
-When you realize this then you'll know you don't have to make decryption function. You can reverse operations with same function if you just knew state before 
+encryption is actually only xor:  data[i] ^ state[i] (b is data[i] and buffer[0] is pretty much state[i])
 
-You may ask now how to steal state? 
+Where state is randomly generated at the beggining(changed later) and data is your input
 
-Well, it's xor again
+Important thing you should know about xor is if a ^ b = c then ( c ^ a = b and c ^ b = a ), 
 
-If (data[i] ^ buffer[i] = encryption[i]) then (encryption[i] ^ data[i] = buffer[i]) 
+also order doesn't matter so a ^ b = b ^ a. It's very convenient when comes to exploiting simple xor encryption.
 
-note that buffer is same value as state but buffer is shown as characters and state is shown as numbers. 
+# vulnerability
+
+Make sure to understand thing above - challange is all about abusing data[i] ^ state[i] = encryption[i]
+
+And we have access to 2 of 3 elements data and encryped version
+
+Then we could use xor characteristics to ( state[i] = encryption[i] ^ data[i] )
+
+now when we reproduced state we can get flag
+
+
+
+# 1 more issue
+
+I mentioned before that the state changes. In encryption function we can see that buffer
+
+```python
+def encrypt(data):
+    global state, buffer
+    print("buffer: ", len(buffer))
+    output = []
+    for b in data:
+        #------------------- here -------------------------
+        if len(buffer) == 0:
+            buffer = b"".join(long_to_bytes(x).rjust(4, b"\x00") for x in state)
+            print("changed state:", state)
+        # ------------------- /here ---------------------
+        output.append(b ^ buffer[0])
+        buffer = buffer[1:]
+    return bytes(output)
+
+```
+
+
 
 # finalizing
 
@@ -384,6 +396,6 @@ if __name__ == "__main__":
 
     #print(state)
 ```
-    
+You can replicate this solution with your values of base(also can keep that), result_hex and flag_enc_hex
 
-I lost my flag unfortunately but here is fabricated one
+Flag is irisctf{initialization_is_no_problem}
