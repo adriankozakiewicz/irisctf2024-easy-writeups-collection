@@ -1,9 +1,11 @@
 # irisctf2024-easy-writeups-collection
 
+List of ctfs described in this repo with quick summary
+
 * web
-    - what's my password
+    - what's my password - sql injection
 * rev
-    - baby rev johnson
-    - whats a rune
+    - baby rev johnson - find data from reverse engeenering
+    - whats a rune - character encoding
 * crypto
-    - babycha
+    - babycha - exploiting encryption algoritm
