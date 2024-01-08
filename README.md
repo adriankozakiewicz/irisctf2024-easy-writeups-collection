@@ -1,4 +1,4 @@
-# irisctf2024-easy-writeups-collection
+# irisctf 2024 easy writeups collection
 
 List of ctfs described in this repo with quick summary
 
