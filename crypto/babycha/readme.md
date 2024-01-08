@@ -110,18 +110,17 @@ if __name__ == "__main__":
 
 ```
 
+Let's take a closer look at the function that handles basics of encryption
 
 ```python
 
 def encrypt(data):
     global state, buffer
-    print("state before encryption:", state)
     print("buffer: ", len(buffer))
     output = []
     for b in data:
         if len(buffer) == 0:
             buffer = b"".join(long_to_bytes(x).rjust(4, b"\x00") for x in state)
-            state = chacha_block(state)
             print("changed state:", state)
         output.append(b ^ buffer[0])
         buffer = buffer[1:]
@@ -129,7 +128,9 @@ def encrypt(data):
 
 ```
 
-encryption is actually only data xor state. 
+![plot](./simple_output.jpg)
+
+encryption is actually only data[i] ^ state[i] (state is first converted to buffer(converted to string and added zeros if needed) ). 
 
 Important thing you should know about xor is if a ^ b = c then c ^ a = b and c ^ b = a, 
 
