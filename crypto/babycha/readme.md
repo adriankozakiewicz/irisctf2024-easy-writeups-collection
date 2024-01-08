@@ -132,6 +132,7 @@ def encrypt(data):
 encryption is actually only data xor state. 
 
 Important thing you should know about xor is if a ^ b = c then c ^ a = b and c ^ b = a, 
+
 also order doesn't matter so a ^ b = b ^ a. It's very convenient when comes to exploiting simple xor encryption.
 
 In our script if we change code and insert same state 
@@ -159,9 +160,13 @@ You may ask now how to steal state?
 
 Well, it's xor again
 
-If (data[i] ^ buffer[i] = encryption[i]) then (encryption[i] ^ data[i] = buffer[i]) and buffer is same value as state but buffer is shown as characters and state is shown as numbers. 
+If (data[i] ^ buffer[i] = encryption[i]) then (encryption[i] ^ data[i] = buffer[i]) 
 
-Actually we want to make sript that gathers buffer from encryption and our custom string.
+note that buffer is same value as state but buffer is shown as characters and state is shown as numbers. 
+
+# finalizing
+
+Now we want to make sript that gathers buffer from encryption and our custom string.
 
 mine looks like that
 
