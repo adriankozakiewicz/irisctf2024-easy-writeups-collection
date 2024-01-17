@@ -4,7 +4,36 @@ To solve this challenge I used ghidra (tbh brute force is option too but I'll sh
 
 see some ghidra tutorial before if you didn't used it yet e.x. https://medium.com/@acheron2302/ghidra-tutorial-in-reverse-engineering-for-window-absolute-begineer-302ba7d810f
 
+# analysis
 
+after decompilation we can see function main
+![plot](./img/main.png)
+
+main fetures
+
+![plot](./img/features.png)
+
+double click on PTR_(...) to see corresponding data section
+
+![plot](./img/data.png)
+
+double click on DAT_(...) to see corresponding data section
+
+![plot](./img/data2.png)
+
+lets test app and provide valid input
+
+![plot](./img/fail.JPG)
+
+it works as intented but we need to figure out order
+
+Here is interesting function call
+
+![plot](./img/check_call.png)
+
+And function itself
+
+![plot](./img/check_func.png)
 
 # last steps
 We can see above a little logic puzzle, lets segregate things to make it readable
@@ -80,5 +109,6 @@ so:
  - foods[2] = 3 (steak)
  - foods[3] = 1 (pizza)
 
+![plot](./img/success.JPG)
 
 
