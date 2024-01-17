@@ -1,5 +1,9 @@
 # What's a rune - irisctf 2024
 
+In this script some message (string) is encoded into antient tablet of unknown characters.
+
+We want to decode given file (the) with the encoded flag. To do this we need to analyze script below.
+
 ```ruby
 
 package main
@@ -45,9 +49,9 @@ func main() {
 
 ```
 
-rune() is function that gets keycode of character ,string() gets string from keycode
+rune() is function that gets keycode of character, string() gets string from keycode
 
-if we change variable names script becomes clear
+I changed names in the script so you can read it and understand more easily:
 
 ```ruby
 
@@ -64,12 +68,18 @@ func init() {
 	flag = strings.Join(runed, "")
 }
 ```
+# quick code comments
+
+note that every encoded character is based on previous one and NOT ENCODED character, first stays unchanged
+
+So we can, basing on first character, decode everything. Don't even need to change much in encoding function to create decoding one.
 
 # solution
 
-to decode we change runed = append(runed, string(curr_char + prev_char)) prev_char = curr_char
+to decode we change:
 
-to runed = append(runed, string(curr_char - prev_char)); prev_char = curr_char - prev_char
+ - from - runed = append(runed, string(curr_char + prev_char)) prev_char = curr_char
+ - to - runed = append(runed, string(curr_char - prev_char)); prev_char = curr_char - prev_char
 
 
 ```ruby
